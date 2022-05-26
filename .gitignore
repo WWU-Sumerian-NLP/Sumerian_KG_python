@@ -1,0 +1,10 @@
+#atf data 
+sumerian_tablets/
+__pycache__
+
+
+#temporaily don't push 
+Github_Downloader/
+
+*.h5
+*.pkl
