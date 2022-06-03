@@ -4,7 +4,7 @@ import requests, zipfile, os, shutil
 import gdown
 
 class CLDIDownloader:
-    def __init__(self, override_flag=False, dest_path = "../sumerian_tablets/"):
+    def __init__(self, override_flag=False, dest_path = "../../../sumerian_tablets/"):
         self.dest_path = dest_path
         self.base_url = "https://cdli.ucla.edu/downloads"
         self.gdrive_map = {'cdli_atf_20220525.txt': "https://drive.google.com/uc?id=10_7gJyFikImUfZQqWJonV2WoQrJAiwZN", "cdli_result_20220525.txt": "https://drive.google.com/uc?id=1UkGJMhsjEnbv9N3Q9ROXS1M3PM5rAlMp"}
