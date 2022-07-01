@@ -12,21 +12,23 @@ def create_graph():
     df = df[df.relations.astype(str) != "nan"]
     df = df.drop_duplicates(subset=['relations'])
     for relation_tuple in df["relations"]:
-        t1, t2, t3 = relation_tuple.split(" ")
+        print(relation_tuple, "\n")
+        if len(relation_tuple) == 3:
+            t1, t2, t3 = relation_tuple.split(" ")
 
-        #animal node 
-        animal_pk = get_random_number()
-        animal_node = Node("Animal", pk=animal_pk, name=t1)
+            #animal node 
+            animal_pk = get_random_number()
+            animal_node = Node("Animal", pk=animal_pk, name=t1)
 
-        #Person node
-        person_pk = get_random_number()
-        person_node = Node("Person", pk=person_pk, name=t2)
+            #Person node
+            person_pk = get_random_number()
+            person_node = Node("Person", pk=person_pk, name=t2)
 
-        #Relationship Node - Delivery 
-        rel_delivery_node = Relationship(person_node, "deliveredBy", animal_node)
-        graph.create(rel_delivery_node)
-        #(ANIM, PN, DEL)
-        print(t1, t2, t3)
+            #Relationship Node - Delivery 
+            rel_delivery_node = Relationship(person_node, "deliveredBy", animal_node)
+            graph.create(rel_delivery_node)
+            #(ANIM, PN, DEL)
+            print(t1, t2, t3)
 
 graph = Graph(password="password")
 create_graph()
