@@ -42,9 +42,10 @@ def serialize_person(person):
 
 def serialize_animal(animal):
     print(animal[2] == None)
+    print("TEST", animal)
     return {
         "person": animal[0],
-        "del": animal[1],
+        "delivers_animal": animal[1],
         "name": animal[2]
     }
 
@@ -52,11 +53,11 @@ def serialize_animal(animal):
 def get_graph():
     def work(tx):
         return list(tx.run(
-            "MATCH (a:Animal)<-[:deliveredBy]-(p:Person) Return p.name as personName, collect(a.name) as animalName"
+            "MATCH (a:Animal)<-[`person:delivers_animal`]-(p:Person) Return p.name as personName, collect(a.name) as animalName"
         ))
     db = get_db()
     results = db.read_transaction(work)
-    # print(results)
+    print(results)
     nodes = []
     rels = []
     i = 0
@@ -101,7 +102,7 @@ def get_person(personName):
     def work(tx, personName_):
         return tx.run(
             "MATCH(person:Person {name:$personName})"
-            "OPTIONAL MATCH (person)<-[r]-(animal:Animal)"
+            "OPTIONAL MATCH (animal)<-[r]-(person:Person)"
             "RETURN person.name as personName, COLLECT([person.name, HEAD(SPLIT(TOLOWER(TYPE(r)), '_')), animal.name]) as cast",
             {"personName": personName_}
         ).single()

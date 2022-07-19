@@ -1,34 +1,24 @@
-from py2neo import Graph, Node, Relationship
-import random
+from py2neo import Graph
 import pandas as pd 
+from relations import ParseRelationTypes
 
-data_path = "~/Desktop/urr3-drehem-KG/Data_Pipeline_go/CDLI_Extractor/output/new_pipeline.tsv" #fix path
 
-def get_random_number():
-    return random.randint(100000000, 1000000000)
 
-def create_graph():
-    df = pd.read_csv(data_path, sep="\t")
-    df = df[df.relations.astype(str) != "nan"]
-    df = df.drop_duplicates(subset=['relations'])
-    for relation_tuple in df["relations"]:
-        print(relation_tuple, "\n")
-        if len(relation_tuple) == 3:
-            t1, t2, t3 = relation_tuple.split(" ")
 
-            #animal node 
-            animal_pk = get_random_number()
-            animal_node = Node("Animal", pk=animal_pk, name=t1)
+class GraphDataCreator:
+    def __init__(self, pathToRelationData):
+        self.pathToRelationData = pathToRelationData
+        self.df = pd.read_csv(self.pathToRelationData, sep="\t")
+        self.df.drop_duplicates() #investigate later 
+    
+    def create_graph(self): #in the future, this will be create nodes, and then we create the graph
+        neo4j_graph = Graph(password="password")
+        for _, row in self.df.iterrows():
+            parsedRelationTypes = ParseRelationTypes(row.relationType, row.subject, row.object, row.tabletNum)
+            neo4j_graph.create(parsedRelationTypes.Relationship)
+        
+ 
 
-            #Person node
-            person_pk = get_random_number()
-            person_node = Node("Person", pk=person_pk, name=t2)
-
-            #Relationship Node - Delivery 
-            rel_delivery_node = Relationship(person_node, "deliveredBy", animal_node)
-            graph.create(rel_delivery_node)
-            #(ANIM, PN, DEL)
-            print(t1, t2, t3)
-
-graph = Graph(password="password")
-create_graph()
+# gdc = GraphDataCreator("~/Desktop/urr3-drehem-KG/Data_Pipeline_go/IE_Extractor/output/ie_data.tsv") #fix path
+gdc = GraphDataCreator("test_relation.tsv")
+gdc.create_graph()
