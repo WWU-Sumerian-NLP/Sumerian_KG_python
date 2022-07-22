@@ -46,7 +46,7 @@ def serialize_animal(animal):
     return {
         "person": animal[0],
         "delivers_animal": animal[1],
-        "name": animal[2]
+        "animal": animal[2]
     }
 
 @app.route("/graph")
@@ -62,15 +62,15 @@ def get_graph():
     rels = []
     i = 0
     for record in results: 
-        nodes.append({"person": record["personName"], "label": "person"})
+        nodes.append({"animal": record["animalName"], "label": "animal"})
         target = i 
         i += 1
-        for name in record["animalName"]:
-            animal = {"name": name, "label": "animal"}
+        for person in record["personName"]:
+            person = {"person": person, "label": "person"}
         try: 
-            source = nodes.index(animal) #find duplicates
+            source = nodes.index(person) #find duplicates
         except ValueError:
-            nodes.append(animal)
+            nodes.append(person)
             source = i 
             i += 1
         rels.append({"source": source, "target": target})
@@ -82,8 +82,8 @@ def get_graph():
 def get_search():
     def work(tx, q_):
         return list(tx.run(
-            "MATCH(person:Person) WHERE toLower(person.name) CONTAINS toLower($name) Return person LIMIT 1",
-            {"name": q_}
+            "MATCH(person:Person) WHERE toLower(person.name) CONTAINS toLower($animal) Return person LIMIT 1",
+            {"animal": q_}
         ))
     try:
         q = request.args["q"]

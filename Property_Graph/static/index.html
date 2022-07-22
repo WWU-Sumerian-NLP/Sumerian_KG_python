@@ -93,7 +93,7 @@
                         // $("#poster").attr("src","https://neo4j-documentation.github.io/developer-resources/language-guides/assets/posters/"+encodeURIComponent(data.name)+".jpg");
                         const $list = $("#animal").empty();
                         data.animals.forEach(function (cast) {
-                            $list.append($("<li>" + cast.name + " " +cast.delivers_animal + " " + cast.person + "</li>"));
+                            $list.append($("<li>" + cast.person + " " +cast.delivers_animal + " " + cast.animal + "</li>"));
                         });
                         $("#vote")
                             .unbind("click")
