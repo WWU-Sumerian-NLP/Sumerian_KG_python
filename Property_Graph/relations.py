@@ -15,25 +15,28 @@ tablet_num: P100001
 '''
 
 class ParseRelationTypes:
-    def __init__(self, relationType, subject_name, object_name, tablet_num) -> None:
+    def __init__(self, relationType, subject_name, object_name, tablet_num, 
+                providence, period, dates_referenced, subject_tag, object_tag) -> None:
+        print(relationType)
         self.relationType = str(relationType)  #person:delivers_animal 
-        subject_str, subject_obj = self.parse_relation()
-        self.Subject = self.createEntityNode(subject_str, subject_name, tablet_num)
-        self.Object = self.createEntityNode(subject_obj, object_name, tablet_num)
-        self.Relationship = self.createRelationshipNode()
+        # subject_str, subject_obj = self.parse_relation()
+        self.Subject = self.createEntityNode(subject_tag, subject_name, tablet_num)
+        self.Object = self.createEntityNode(object_tag, object_name, tablet_num)
+        self.Relationship = self.createRelationshipNode(providence, period, dates_referenced)
 
     def parse_relation(self):
         return self.relationType.split(":")
 
-    def createEntityNode(self, entity_label, entity_name, tablet_num):
-        if 'person' in entity_label:
+    def createEntityNode(self, entity_tag, entity_name, tablet_num):
+        if 'PN' in entity_tag or 'FOR' in entity_tag:
             return Person(entity_name, tablet_num)
-        elif 'animal' in entity_label: #TODO - How to deal with delivers_animal
+        elif 'ANIM' in entity_tag: 
             return Animal(entity_name, tablet_num)
         
 
-    def createRelationshipNode(self):
-        return Relationship(self.Subject.get_neo4j_node(), self.relationType, self.Object.get_neo4j_node())
+    def createRelationshipNode(self, providence, period, dates_referenced):
+        return Relationship(self.Subject.get_neo4j_node(), self.relationType, self.Object.get_neo4j_node(), 
+        providence=providence, period=period, dates_referenced=dates_referenced)
 
 #PN - Personal Name Tag
 class Person:

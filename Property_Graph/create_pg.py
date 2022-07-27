@@ -14,7 +14,8 @@ class GraphDataCreator:
     def create_graph(self): #in the future, this will be create nodes, and then we create the graph
         neo4j_graph = Graph(password="password")
         for _, row in self.df.iterrows():
-            parsedRelationTypes = ParseRelationTypes(row.relation_type, row.subject, row.object, row.tablet_num)
+            parsedRelationTypes = ParseRelationTypes(row.relation_type, row.subject, row.object, row.tablet_num, row.providence,
+            row.period, row.dates_referenced, row.subject_tag, row.object_tag)
             neo4j_graph.create(parsedRelationTypes.Relationship)
         
  
