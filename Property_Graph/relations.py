@@ -17,9 +17,7 @@ tablet_num: P100001
 class ParseRelationTypes:
     def __init__(self, relationType, subject_name, object_name, tablet_num, 
                 providence, period, dates_referenced, subject_tag, object_tag) -> None:
-        print(relationType)
         self.relationType = str(relationType)  #person:delivers_animal 
-        # subject_str, subject_obj = self.parse_relation()
         self.Subject = self.createEntityNode(subject_tag, subject_name, tablet_num)
         self.Object = self.createEntityNode(object_tag, object_name, tablet_num)
         self.Relationship = self.createRelationshipNode(providence, period, dates_referenced)
