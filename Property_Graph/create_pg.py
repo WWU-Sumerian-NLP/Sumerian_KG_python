@@ -18,10 +18,11 @@ class GraphDataCreator:
             parsedRelationTypes = ParseRelationTypes(neo4j_graph, row.relation_type, row.subject, row.object, row.tablet_num, row.subject_tag, row.object_tag)
             subject, object = parsedRelationTypes.Subject, parsedRelationTypes.Object
             relationship = parsedRelationTypes.createRelationshipNode(subject, object, row.providence, row.period, row.dates_referenced)
+            print(relationship, "\n")
             neo4j_graph.create(relationship)
         
  
 
-gdc = GraphDataCreator("~/Desktop/urr3-drehem-KG/Data_Pipeline_go/IE_Extractor/output/urr3_ie_annotations.tsv") #fix path
+# gdc = GraphDataCreator("~/Desktop/urr3-drehem-KG/Data_Pipeline_go/IE_Extractor/output/urr3_ie_annotations.tsv") #fix path
 # gdc = GraphDataCreator("test_relation.tsv")
-gdc.create_graph() 
+# gdc.create_graph() 
