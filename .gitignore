@@ -10,3 +10,5 @@ Github_Downloader/
 
 *.h5
 *.pkl
+
+load_to_auradb.py
